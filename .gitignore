@@ -4,3 +4,5 @@ notes-app/package-lock.json
 notes-app/node_modules
 weather-app/package-lock.json
 weather-app/node_modules
+web-server/package-lock.json
+web-server/node_modules
