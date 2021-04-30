@@ -2,6 +2,8 @@ const path = require( 'path' );
 
 const hbs = require( 'hbs' );
 const express = require( 'express' );
+const geocode = require( '../../weather-app/services/geocode' );
+const forecast = require( '../../weather-app/services/forecast' );
 const app = express();
 
 // Define default page parameters
@@ -46,6 +48,37 @@ app.get( '/help', ( req, res ) => {
         ...parameters,
         title: 'How to get help?'
     } );
+} );
+
+app.get( '/weather', ( req, res ) => {
+    const { address = 'Gaza city' } = req.query;
+    if ( !address ) {
+        return res.send( {
+            error: 'address is required'
+        } );
+    }
+
+    geocode( address, ( geoerror, geodata ) => {
+        if ( geoerror ) {
+            return res.send( {
+                error: geoerror
+            } );
+        }
+
+        const { latitude, longitude } = geodata;
+
+        forecast( latitude, longitude, ( forecasterror, forecastdata ) => {
+            const { weather_descriptions, temperature, feelslike, location } = forecastdata;
+            res.send( {
+                weather_descriptions,
+                temperature,
+                feelslike,
+                location
+            } );
+        } );
+    } );
+
+
 } );
 
 app.get( '*', ( req, res ) => {
