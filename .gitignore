@@ -6,3 +6,5 @@ weather-app/package-lock.json
 weather-app/node_modules
 web-server/package-lock.json
 web-server/node_modules
+task-manager/package-lock.json
+task-manager/node_modules
